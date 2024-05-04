@@ -1,7 +1,5 @@
 package LongestValidParentheses;
 
-import java.util.Stack;
-
 // problem https://leetcode.com/problems/longest-valid-parentheses/
 
 class LongestValidParenthesesV3 {
@@ -66,7 +64,9 @@ class LongestValidParenthesesV3 {
 
         // System.out.println(p.longestValidParentheses(")()())"));
 
-        System.out.println(p.longestValidParentheses(")))"));
+        // System.out.println(p.longestValidParentheses(")))"));
+
+        System.out.println(p.longestValidParentheses("(()(()))"));
 
     }
 }
