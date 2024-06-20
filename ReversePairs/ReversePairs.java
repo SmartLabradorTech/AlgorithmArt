@@ -14,11 +14,8 @@ class ReversePairs {
                 if (nums[i] > 2.0 * nums[j]) {
                     count++;
                 }
-
             }
-
         }
-
         return count;
     }
 
