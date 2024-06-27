@@ -56,25 +56,40 @@ public class QueueReconstructionV3 {
 
         });
 
+        Bit bits = new Bit(people.length);
+
         for (int i = 0; i < people.length; i++) {
 
-            int emptyPositions = 0;
+            int location = find(0, people.length - 1, bits, i, result, people);
 
-            for (int k = 0; k < people.length; k++) {
-                if (result[k] == null) {
-                    emptyPositions++;
-                }
+            result[location] = people[i];
 
-                if (emptyPositions == people[i][1] + 1) {
-                    // we find it.
-                    result[k] = people[i];
-                    break;
-                }
-
-            }
+            bits.add(location, 1);
         }
 
         return result;
+    }
+
+    public int find(int start, int end, Bit bits, int target, int[][] result, int[][] people) {
+
+        int mid = (start + end) / 2;
+
+        int countOfOccupants = bits.presum(mid);
+
+        if (mid - countOfOccupants == people[target][1]) {
+
+            // the location could have been taken by others.
+            if (result[mid] == null) {
+                return mid;
+            } else {
+                return find(start, mid - 1, bits, target, result, people);
+            }
+
+        } else if (mid - countOfOccupants < people[target][1]) {
+            return find(mid + 1, end, bits, target, result, people);
+        }
+
+        return find(start, mid - 1, bits, target, result, people);
     }
 
     public void print(int[][] people) {
@@ -87,7 +102,7 @@ public class QueueReconstructionV3 {
 
     public static void main(String[] args) {
 
-        QueueReconstruction qs = new QueueReconstruction();
+        QueueReconstructionV3 qs = new QueueReconstructionV3();
         int[][] test = { { 7, 0 }, { 4, 4 }, { 7, 1 }, { 5, 0 }, { 6, 1 }, { 5, 2 } };
 
         qs.print(qs.reconstructQueue(test));
