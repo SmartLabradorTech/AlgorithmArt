@@ -72,24 +72,20 @@ public class QueueReconstructionV3 {
 
     public int find(int start, int end, Bit bits, int target, int[][] result, int[][] people) {
 
+        if (start == end) {
+            return start;
+        }
+
         int mid = (start + end) / 2;
 
         int countOfOccupants = bits.presum(mid);
 
-        if (mid - countOfOccupants == people[target][1]) {
-
-            // the location could have been taken by others.
-            if (result[mid] == null) {
-                return mid;
-            } else {
-                return find(start, mid - 1, bits, target, result, people);
-            }
-
-        } else if (mid - countOfOccupants < people[target][1]) {
+        if (mid - countOfOccupants < people[target][1]) {
             return find(mid + 1, end, bits, target, result, people);
+        } else {
+            return find(start, mid, bits, target, result, people);
         }
 
-        return find(start, mid - 1, bits, target, result, people);
     }
 
     public void print(int[][] people) {
