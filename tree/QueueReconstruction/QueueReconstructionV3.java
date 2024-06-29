@@ -60,33 +60,49 @@ public class QueueReconstructionV3 {
 
         for (int i = 0; i < people.length; i++) {
 
-            int location = find(0, people.length - 1, bits, i, result, people);
+            // int location = find(0, people.length - 1, bits, i, result, people);
 
-            result[location] = people[i];
+            int left = 0, right = people.length - 1;
+            int mid = 0;
 
-            bits.add(location, 1);
+            while (left <= right) {
+
+                mid = (left + right) / 2;
+
+                if (mid + 1 - bits.presum(mid) < people[i][1] + 1) {
+                    left = mid + 1;
+                } else {
+                    right = mid;
+                }
+
+            }
+
+            result[mid] = people[i];
+
+            bits.add(mid, 1);
         }
 
         return result;
     }
 
-    public int find(int start, int end, Bit bits, int target, int[][] result, int[][] people) {
+    // public int find(int start, int end, Bit bits, int target, int[][] result,
+    // int[][] people) {
 
-        if (start == end) {
-            return start;
-        }
+    // if (start == end) {
+    // return start;
+    // }
 
-        int mid = (start + end) / 2;
+    // int mid = (start + end) / 2;
 
-        int countOfOccupants = bits.presum(mid);
+    // int countOfOccupants = bits.presum(mid);
 
-        if (mid - countOfOccupants < people[target][1]) {
-            return find(mid + 1, end, bits, target, result, people);
-        } else {
-            return find(start, mid, bits, target, result, people);
-        }
+    // if (mid - countOfOccupants < people[target][1]) {
+    // return find(mid + 1, end, bits, target, result, people);
+    // } else {
+    // return find(start, mid, bits, target, result, people);
+    // }
 
-    }
+    // }
 
     public void print(int[][] people) {
         System.out.println("print");
