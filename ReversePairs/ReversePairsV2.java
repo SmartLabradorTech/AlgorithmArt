@@ -4,6 +4,10 @@ import java.util.Arrays;
 
 public class ReversePairsV2 {
 
+    // this version solves the reverse pair where nums[i] > nums[j] but the original
+    // problem is to nums[i] > 2 * nums[j].
+    // We will solve the real problem in V3.
+
     public int reversePairs(int[] nums) {
 
         int result = 0;
