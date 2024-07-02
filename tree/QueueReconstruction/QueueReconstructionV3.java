@@ -69,12 +69,22 @@ public class QueueReconstructionV3 {
 
                 mid = (left + right) / 2;
 
-                if (mid + 1 - bits.presum(mid) < people[i][1] + 1) {
-                    left = mid + 1;
-                } else {
-                    right = mid;
-                }
+                int currentSpaces = mid + 1 - bits.presum(mid);
 
+                if (currentSpaces < people[i][1] + 1) {
+                    left = mid + 1;
+                } else if (currentSpaces > people[i][1] + 1) {
+                    right = mid - 1;
+                } else {
+                    // we find the exact spaces. but the current location could have been occupied.
+
+                    if (result[mid] == null) {
+                        break;
+                    }
+
+                    right = mid - 1;
+
+                }
             }
 
             result[mid] = people[i];
