@@ -2,10 +2,10 @@ package ReversePairs;
 
 import java.util.Arrays;
 
-public class ReversePairsV3 {
+public class ReversePairsV4 {
 
     // https://leetcode.com/problems/reverse-pairs/
-    // scan the input from right to left
+    // scan the input from left to right
 
     public int reversePairs(int[] nums) {
 
@@ -21,21 +21,22 @@ public class ReversePairsV3 {
 
         Arrays.sort(merged);
 
+        // System.out.println(Arrays.toString(merged));
+
         Bits bits = new Bits(nums.length * 2);
 
         int result = 0;
 
-        for (int i = nums.length - 1; i >= 0; i--) {
-            int index = Arrays.binarySearch(merged, nums[i]);
+        for (int i = 0; i < nums.length; i++) {
 
-            // the smallest element
-            if (index > 0) {
-                result += bits.presum(index - 1);
-            }
+            int doubledIndex = Arrays.binarySearch(merged, (long) 2 * nums[i]);
 
-            int indexOfDouble = Arrays.binarySearch(merged, (long) 2 * nums[i]);
+            int small = bits.presum(doubledIndex); // all numbers which <= current value
+            result += (i - small);
 
-            bits.add(indexOfDouble, 1);
+            int singleIndex = Arrays.binarySearch(merged, nums[i]);
+
+            bits.add(singleIndex, 1);
         }
 
         return result;
@@ -76,7 +77,7 @@ public class ReversePairsV3 {
 
     public static void main(String[] args) {
 
-        ReversePairsV3 rp = new ReversePairsV3();
+        ReversePairsV4 rp = new ReversePairsV4();
 
         int[] nums = { 1, 3, 2, 3, 1 };
 
