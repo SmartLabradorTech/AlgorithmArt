@@ -4,6 +4,8 @@ import java.util.Arrays;
 
 public class HIndexV2 {
 
+    // sort and use binary search
+
     public int hIndex(int[] citations) {
 
         Arrays.sort(citations);
