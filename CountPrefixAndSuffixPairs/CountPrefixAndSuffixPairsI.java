@@ -1,4 +1,4 @@
-package CountPrefixAndSuffixPairsI;
+package CountPrefixAndSuffixPairs;
 
 // https://leetcode.com/problems/count-prefix-and-suffix-pairs-i/description/
 
