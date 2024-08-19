@@ -28,25 +28,30 @@ public class CountPrefixAndSuffixPairsII {
 
         Map<CharPair, Node> children;
 
-        boolean hasEnd;
+        int endedCount;
     }
 
     public long countPrefixSuffixPairs(String[] words) {
 
         Node root = new Node();
 
+        long result = 0;
+
         for (int i = 0; i < words.length; i++) {
 
+            long count = insert(words[i], root);
+
+            result += count;
         }
 
-        return 0;
+        return result;
     }
 
-    private int insert(String word, Node node) {
+    private long insert(String word, Node node) {
 
         Node movingNode = node;
 
-        int count = 0;
+        long count = 0;
 
         for (int i = 0; i < word.length(); i++) {
             int j = word.length() - 1 - i;
@@ -67,14 +72,12 @@ public class CountPrefixAndSuffixPairsII {
                 // already added.
                 movingNode = children.get(pairToCheck);
 
-                if(){
-
-
-                }
+                count += movingNode.endedCount;
             } else {
                 // need to add.
                 Node newNode = new Node();
                 newNode.charPair = pairToCheck;
+                newNode.endedCount = 0;
 
                 children.put(pairToCheck, newNode);
 
@@ -83,6 +86,24 @@ public class CountPrefixAndSuffixPairsII {
 
         }
 
+        movingNode.endedCount++;
+
+        return count;
+    }
+
+    public static void main(String[] args) {
+
+        CountPrefixAndSuffixPairsII cp = new CountPrefixAndSuffixPairsII();
+
+        // String[] words = { "a", "aba", "ababa", "aa" };
+
+        // String[] words = { "pa", "papa", "ma", "mama" };
+
+        // String[] words = { "abab", "ab" };
+
+        String[] words = { "ab", "ab", "ab" };
+
+        System.out.println(cp.countPrefixSuffixPairs(words));
     }
 
 }
