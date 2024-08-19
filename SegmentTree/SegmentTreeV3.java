@@ -59,6 +59,10 @@ public class SegmentTreeV3 {
             return;
         }
 
+        if (lazy[target] != 0) {
+            pushDown(x, start, end, target);
+        }
+
         int mid = (start + end) / 2;
 
         add(l, r, x, start, mid, 2 * target + 1);
@@ -68,6 +72,57 @@ public class SegmentTreeV3 {
 
     private void pushDown(int x, int start, int end, int target) {
 
+        int mid = (start + end) / 2;
+
+        tree[2 * target + 1] += (mid - start + 1) * x;
+
+        lazy[2 * target + 1] += x;
+
+        tree[2 * target + 2] += (end - mid - 1 + 1) * x;
+
+        lazy[2 * target + 2] += x;
+
+        lazy[target] = 0;
+    }
+
+    public int query(int i) {
+        return query(i, 0, nums.length - 1, 1);
+    }
+
+    private int query(int i, int start, int end, int target) {
+
+        // if(start == end){
+        // return tree[]
+        // }
+
+        return 0;
+    }
+
+    public int sum(int l, int r) {
+        return sum(l, r, 0, nums.length - 1, 0);
+    }
+
+    private int sum(int l, int r, int start, int end, int target) {
+
+        if (l <= start && end <= r) {
+            return tree[target];
+        }
+
+        if (end < l || start > r) {
+            return 0;
+        }
+
+        if (lazy[target] != 0) {
+            pushDown(lazy[target], start, end, target);
+        }
+
+        int mid = (start + end) / 2;
+
+        int leftSum = sum(l, r, start, mid, 2 * target + 1);
+
+        int rightSum = sum(l, r, mid + 1, end, 2 * target + 2);
+
+        return leftSum + rightSum;
     }
 
     public static void main(String[] args) {
@@ -77,6 +132,11 @@ public class SegmentTreeV3 {
         SegmentTreeV3 st = new SegmentTreeV3(nums);
 
         System.out.println(Arrays.toString(st.tree));
+
+        st.add(0, 0, 1);
+
+        System.out.println(st.sum(0, 1));
+
     }
 
 }
