@@ -38,6 +38,7 @@ public class SegmentTreeV3 {
         tree[target] = tree[2 * target + 1] + tree[2 * target + 2];
     }
 
+    // increase all numbers in the range by x.
     public void add(int l, int r, int x) {
         add(l, r, x, 0, nums.length - 1, 0);
     }
@@ -68,6 +69,8 @@ public class SegmentTreeV3 {
         add(l, r, x, start, mid, 2 * target + 1);
 
         add(l, r, x, mid + 1, end, 2 * target + 2);
+
+        tree[target] = tree[2 * target + 1] + tree[2 * target + 2];
     }
 
     private void pushDown(int x, int start, int end, int target) {
@@ -125,6 +128,11 @@ public class SegmentTreeV3 {
         return leftSum + rightSum;
     }
 
+    // update all numbers in the range to be x.
+    public void update(int l, int r, int x) {
+
+    }
+
     public static void main(String[] args) {
 
         int[] nums = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
@@ -133,9 +141,11 @@ public class SegmentTreeV3 {
 
         System.out.println(Arrays.toString(st.tree));
 
-        st.add(0, 0, 1);
+        st.add(0, 1, 1);
 
-        System.out.println(st.sum(0, 1));
+        System.out.println(st.sum(0, 2));
+
+        System.out.println(st.sum(1, 1));
 
     }
 
