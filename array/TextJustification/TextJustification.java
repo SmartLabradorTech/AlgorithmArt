@@ -59,13 +59,10 @@ public class TextJustification {
                         startIndex = i;
 
                         runningLength = words[startIndex].length();
-
                         continue;
-
                     }
 
                     if (extraNeeded % (wordCount - 1) == 0) {
-
                         int averageExtra = extraNeeded / (wordCount - 1) + 1;
 
                         String empty = generate(averageExtra);
@@ -77,31 +74,28 @@ public class TextJustification {
 
                         result.add(buildResult);
                     } else {
-
                         int averageExtra = extraNeeded / (wordCount - 1);
                         int lastExtra = extraNeeded % (wordCount - 1);
-                        String[] pad = new String[end - startIndex];
+                        int[] padCount = new int[end - startIndex];
+                        Arrays.fill(padCount, 1);
 
                         if (averageExtra > 0) {
-                            String averagePad = generate(averageExtra + 1);
-                            String extraPad = generate(lastExtra + 1);
-
-                            Arrays.fill(pad, averagePad);
-                            pad[pad.length - 1] = extraPad;
-                        } else {
-                            String averagePad = generate(2);
-                            String extraPad = generate(1);
-
-                            for (int k = 0; k < pad.length; k++) {
-
-                                if (k <= lastExtra - 1) {
-                                    pad[k] = averagePad;
-                                } else {
-                                    pad[k] = extraPad;
-                                }
-
+                            for (int u = 0; u < padCount.length; u++) {
+                                padCount[u] += averageExtra;
                             }
+                        }
 
+                        for (int k = 0; k < padCount.length; k++) {
+                            if (k <= lastExtra - 1) {
+                                padCount[k] += 1;
+                            } else {
+                                break;
+                            }
+                        }
+
+                        String[] pad = new String[padCount.length];
+                        for (int s = 0; s < pad.length; s++) {
+                            pad[s] = generate(padCount[s]);
                         }
 
                         String buildResult = build(startIndex, end, words, pad);
@@ -123,9 +117,7 @@ public class TextJustification {
 
         }
 
-        if (startIndex < words.length)
-
-        {
+        if (startIndex < words.length) {
             // handle last piece.
             StringBuilder sb = new StringBuilder();
             for (int i = startIndex; i < words.length; i++) {
@@ -136,11 +128,16 @@ public class TextJustification {
                 }
             }
 
-            if (sb.length() < maxWidth) {
-                String pad = generate(maxWidth - sb.length());
+            String lastResult = sb.toString();
 
-                result.add(sb.toString() + pad);
+            // System.out.println(sb.length() + "&&&" + sb.toString());
+
+            if (lastResult.length() < maxWidth) {
+                String pad = generate(maxWidth - lastResult.length());
+                lastResult += pad;
             }
+
+            result.add(lastResult);
         }
 
         return result;
@@ -177,9 +174,13 @@ public class TextJustification {
         // String[] words = { "This", "is", "an", "example", "of", "text",
         // "justification." };
 
-        String[] words = { "Science", "is", "what", "we", "understand", "well", "enough", "to", "explain", "to", "a",
-                "computer.", "Art", "is", "everything", "else", "we", "do" };
-        int maxWidth = 20;
+        // String[] words = { "Science", "is", "what", "we", "understand", "well",
+        // "enough", "to", "explain", "to", "a",
+        // "computer.", "Art", "is", "everything", "else", "we", "do" };
+
+        String[] words = { "Here", "is", "an", "example", "of", "text", "justification." };
+
+        int maxWidth = 14;
 
         List<String> result = tj.fullJustify(words, maxWidth);
 
