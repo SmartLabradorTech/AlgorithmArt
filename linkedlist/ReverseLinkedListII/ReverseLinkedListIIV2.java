@@ -3,50 +3,51 @@ package linkedlist.ReverseLinkedListII;
 // use recursion to solve.
 
 public class ReverseLinkedListIIV2 {
-
-    private ListNode innerHead = null;
-
     public ListNode reverseBetween(ListNode head, int left, int right) {
 
-        innerHead = findHead(head, right);
-        return null;
+        if (left == right) {
+            return head;
+        }
+
+        return reverseBetween(head, 1, head, left, right);
     }
 
-    private ListNode findHead(ListNode head, int right) {
+    private ListNode reverseBetween(ListNode oldHead, int step, ListNode node, int left, int right) {
 
-        ListNode node = head;
-        ListNode previous = null;
-        int count = 0;
+        if (step < left - 1) {
 
-        while (count < right) {
+            reverseBetween(oldHead, step + 1, node.next, left, right);
 
-            count++;
-
-            previous = node;
-
-            node = node.next;
+            return oldHead;
         }
 
-        return previous;
-    }
+        if (step == left - 1) {
 
-    private ListNode reverse(ListNode node, ListNode previous, int count, int left, int right) {
+            ListNode innerHead = node;
 
-        if (count <= left - 1) {
-            return reverse(node.next, node, count + 1, left, right);
+            ListNode subHead = reverseBetween(oldHead, step + 1, node.next, left, right);
+
+            innerHead.next = subHead;
+
+            return oldHead;
         }
 
-        if (count == left) {
+        if (step >= left && step < right) {
 
-            ListNode tail = reverse(node.next, node, count + 1, left, right);
+            ListNode next = node.next;
 
-            if (previous != null) {
+            ListNode subHead = reverseBetween(oldHead, step + 1, next, left, right);
 
-            }
+            ListNode temp = next.next;
 
+            next.next = node;
+
+            node.next = temp;
+
+            return subHead;
         }
 
-        return null;
+        return node;
     }
 
 }
