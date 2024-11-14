@@ -15,13 +15,12 @@ public class ReverseLinkedListIIV4 {
         ListNode beforeChange = null;
         ListNode firstChange = null;
 
-        while (left <= right) {
+        while (left < right) {
 
             if (left != 1) {
                 beforeChange = current;
-                next = current.next;
-
                 current = next;
+                next = current.next;
 
                 left--;
                 right--;
@@ -53,5 +52,29 @@ public class ReverseLinkedListIIV4 {
         beforeChange.next = current;
 
         return head;
+    }
+
+    public static void main(String[] args) {
+
+        ReverseLinkedListIIV4 rd = new ReverseLinkedListIIV4();
+
+        ListNode node1 = new ListNode(5);
+
+        ListNode node2 = new ListNode(4, node1);
+
+        ListNode node3 = new ListNode(3, node2);
+
+        ListNode node4 = new ListNode(2, node3);
+
+        ListNode node5 = new ListNode(1, node4);
+
+        ListNode node = rd.reverseBetween(node5, 2, 4);
+
+        while (node != null) {
+            System.out.println(node.val);
+
+            node = node.next;
+        }
+
     }
 }
