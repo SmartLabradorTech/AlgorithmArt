@@ -171,6 +171,31 @@ public class SegmentTree {
         return result;
     }
 
+    public int min(int l, int r) {
+        return min(l, r, 1, 0, n - 1);
+    }
+
+    private int min(int l, int r, int index, int left, int right) {
+
+        if (left == right) {
+            return tree[index];
+        }
+
+        int mid = left + (right - left) / 2;
+
+        int result = Integer.MAX_VALUE;
+
+        if (l <= mid) {
+            result = Math.min(min(l, r, 2 * index, left, mid), result);
+        }
+
+        if (r > mid) {
+            result = Math.min(min(l, r, 2 * index + 1, mid + 1, right), result);
+        }
+
+        return result;
+    }
+
     public static void main(String[] args) {
 
         // int[] nums = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
@@ -190,7 +215,7 @@ public class SegmentTree {
 
         // System.out.println(st.query(2));
 
-        System.out.println(st.sum(1, 1));
+        System.out.println(st.min(1, 4));
     }
 
 }
