@@ -5,7 +5,7 @@ package SegmentTree.try2;
 import java.util.Arrays;
 
 public class SegmentTree {
-    int[] nums, tree;
+    int[] nums, tree, lazy;
     int n;
 
     public SegmentTree(int[] nums) {
@@ -13,6 +13,7 @@ public class SegmentTree {
         this.n = nums.length;
 
         this.tree = new int[4 * n];
+        this.lazy = new int[4 * n];
 
         build(1, 0, n - 1);
     }
@@ -196,6 +197,74 @@ public class SegmentTree {
         return result;
     }
 
+    // range add
+    public void add(int l, int r, int x) {
+        add(l, r, x, 1, 0, n - 1);
+    }
+
+    private void add(int l, int r, int x, int index, int left, int right) {
+
+        if (l <= left && right <= r) {
+            // just update and do not push down.
+            tree[index] += (right - left + 1) * x;
+
+            lazy[index] += x;
+            return;
+        }
+
+        int mid = left + (right - left) / 2;
+
+        if (l <= mid) {
+            add(l, r, x, 2 * index, left, mid);
+        }
+
+        if (r > mid) {
+            add(l, r, x, 2 * index + 1, mid + 1, right);
+        }
+
+        pushUp(index);
+
+    }
+
+    public int sumWithLazy(int l, int r) {
+        return sumWithLazy(l, r, 1, 0, n - 1);
+    }
+
+    private int sumWithLazy(int l, int r, int index, int left, int right) {
+
+        if (l <= left && right <= r) {
+            return tree[index];
+        }
+
+        // need to check further.
+
+        int mid = left + (right - left) / 2;
+
+        if (lazy[index] != 0) {
+            // push down
+
+            tree[2 * index] += (mid - left + 1) * lazy[index];
+            lazy[2 * index] += lazy[index];
+
+            tree[2 * index + 1] += (right - mid) * lazy[index];
+            lazy[2 * index + 1] += lazy[index];
+
+            lazy[index] = 0;
+        }
+
+        int result = 0;
+
+        if (l <= mid) {
+            result += sumWithLazy(l, r, 2 * index, left, mid);
+        }
+
+        if (r > mid) {
+            result += sumWithLazy(l, r, 2 * index + 1, mid + 1, right);
+        }
+
+        return result;
+    }
+
     public static void main(String[] args) {
 
         // int[] nums = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
@@ -215,7 +284,14 @@ public class SegmentTree {
 
         // System.out.println(st.query(2));
 
-        System.out.println(st.min(1, 4));
+        // System.out.println(st.min(1, 4));
+
+        st.add(0, 1, 100);
+        System.out.println(Arrays.toString(st.tree));
+        // System.out.println(Arrays.toString(st.lazy));
+
+        System.out.println(st.sumWithLazy(0, 4));
+
     }
 
 }
