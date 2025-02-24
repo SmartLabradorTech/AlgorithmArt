@@ -8,6 +8,8 @@ public class SolutionUsingUnion {
 
         private int[] capital;
 
+        private int[] size;
+
         private int unionCount;
 
         private int n;
@@ -17,9 +19,11 @@ public class SolutionUsingUnion {
 
             n = isConnected.length;
             capital = new int[n];
+            size = new int[n];
 
             for (int i = 0; i < n; i++) {
                 capital[i] = i;
+                size[i] = 1;
             }
 
             for (int i = 0; i < n; i++) {
@@ -42,7 +46,15 @@ public class SolutionUsingUnion {
             int second = find(y);
 
             if (first != second) {
-                capital[second] = first;
+
+                if (size[first] < size[second]) {
+                    capital[first] = second;
+
+                    size[second] += size[first];
+                } else {
+                    capital[second] = first;
+                    size[first] += size[second];
+                }
 
                 unionCount++;
             }
