@@ -8,7 +8,7 @@ public class SolutionUsingUnion {
 
         private int[] capital;
 
-        private int[] size;
+        private int[] rank;
 
         private int unionCount;
 
@@ -19,11 +19,11 @@ public class SolutionUsingUnion {
 
             n = isConnected.length;
             capital = new int[n];
-            size = new int[n];
+            rank = new int[n];
 
             for (int i = 0; i < n; i++) {
                 capital[i] = i;
-                size[i] = 1;
+                rank[i] = 0;
             }
 
             for (int i = 0; i < n; i++) {
@@ -47,13 +47,13 @@ public class SolutionUsingUnion {
 
             if (first != second) {
 
-                if (size[first] < size[second]) {
+                if (rank[first] == rank[second]) {
+                    capital[second] = first;
+                    rank[first]++;
+                } else if (rank[first] < rank[second]) {
                     capital[first] = second;
-
-                    size[second] += size[first];
                 } else {
                     capital[second] = first;
-                    size[first] += size[second];
                 }
 
                 unionCount++;
