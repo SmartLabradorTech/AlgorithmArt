@@ -1,6 +1,7 @@
 package union.NumberofProvinces;
 
 // https://leetcode.com/problems/number-of-provinces/description/
+// using rank
 
 public class SolutionUsingUnion {
 
