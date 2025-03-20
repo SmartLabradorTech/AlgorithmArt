@@ -1,8 +1,6 @@
 package array.LongestConsecutiveSequence;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class LongestConsecutiveSequenceV2 {
@@ -14,18 +12,10 @@ public class LongestConsecutiveSequenceV2 {
             unique.add(nums[i]);
         }
 
-        List<Integer> updatedNums = new ArrayList<>(unique);
-
         int longest = 0;
 
-        for (int i = 0; i < updatedNums.size(); i++) {
-
-            int number = updatedNums.get(i);
-
-            if (unique.contains(number - 1)) {
-                // no need to use as start point
-            } else {
-
+        for (int number : unique) {
+            if (!unique.contains(number - 1)) {
                 int currentLongest = 1;
 
                 while (unique.contains(number + 1)) {
@@ -34,9 +24,7 @@ public class LongestConsecutiveSequenceV2 {
                 }
 
                 longest = Math.max(currentLongest, longest);
-
             }
-
         }
 
         return longest;
